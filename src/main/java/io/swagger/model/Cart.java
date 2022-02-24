@@ -21,13 +21,13 @@ public class Cart   {
   private Long cartId = null;
 
   @JsonProperty("dishId")
-  private Integer dishId = null;
+  private Long dishId = null;
 
   @JsonProperty("dishQuatity")
   private Integer dishQuatity = null;
 
   @JsonProperty("orderMasterId")
-  private Integer orderMasterId = null;
+  private Long orderMasterId = null;
 
   public Cart cartId(Long cartId) {
     this.cartId = cartId;
@@ -49,7 +49,7 @@ public class Cart   {
     this.cartId = cartId;
   }
 
-  public Cart dishId(Integer dishId) {
+  public Cart dishId(Long dishId) {
     this.dishId = dishId;
     return this;
   }
@@ -61,11 +61,11 @@ public class Cart   {
   @ApiModelProperty(value = "")
 
 
-  public Integer getDishId() {
+  public Long getDishId() {
     return dishId;
   }
 
-  public void setDishId(Integer dishId) {
+  public void setDishId(Long dishId) {
     this.dishId = dishId;
   }
 
@@ -89,7 +89,7 @@ public class Cart   {
     this.dishQuatity = dishQuatity;
   }
 
-  public Cart orderMasterId(Integer orderMasterId) {
+  public Cart orderMasterId(Long orderMasterId) {
     this.orderMasterId = orderMasterId;
     return this;
   }
@@ -101,11 +101,11 @@ public class Cart   {
   @ApiModelProperty(value = "")
 
 
-  public Integer getOrderMasterId() {
+  public Long getOrderMasterId() {
     return orderMasterId;
   }
 
-  public void setOrderMasterId(Integer orderMasterId) {
+  public void setOrderMasterId(Long orderMasterId) {
     this.orderMasterId = orderMasterId;
   }
 

@@ -38,7 +38,7 @@ public class CustomerApiController implements CustomerApi {
         this.request = request;
     }
 
-    public ResponseEntity<Void> addDishToCart(@ApiParam(value = "Transaction object" ,required=true )   @RequestBody Cart body,@ApiParam(value = "customer Id in the context path",required=true) @PathVariable("customerId") Integer customerId,@ApiParam(value = "Restaurant Id in the context path",required=true) @PathVariable("restaurantId") Integer restaurantId,@ApiParam(value = "dish Id in the context path",required=true) @PathVariable("dishId") Integer dishId,@ApiParam(value = "Metadata about the request { \"requestId\": \"237e9877-e79b-12d4-a765-321741963000\", \"language\": \"en\", \"clientApp\": \"clientAppId provided\", \"requestTime\": \"yyyy-MM-dd HH:mm:ss\"  }" ) @RequestHeader(value="REQUEST-METADATA", required=false) String REQUEST_METADATA,@ApiParam(value = "" ) @RequestHeader(value="X-ENABLE-EXCEPTION-TRACE", required=false) Boolean X_ENABLE_EXCEPTION_TRACE) {
+    public ResponseEntity<Void> addDishToCart(@ApiParam(value = "Transaction object" ,required=true )  @RequestBody Cart body,@ApiParam(value = "customer Id in the context path",required=true) @PathVariable("customerId") Integer customerId,@ApiParam(value = "Restaurant Id in the context path",required=true) @PathVariable("restaurantId") Integer restaurantId,@ApiParam(value = "dish Id in the context path",required=true) @PathVariable("dishId") Integer dishId,@ApiParam(value = "Metadata about the request { \"requestId\": \"237e9877-e79b-12d4-a765-321741963000\", \"language\": \"en\", \"clientApp\": \"clientAppId provided\", \"requestTime\": \"yyyy-MM-dd HH:mm:ss\"  }" ) @RequestHeader(value="REQUEST-METADATA", required=false) String REQUEST_METADATA,@ApiParam(value = "" ) @RequestHeader(value="X-ENABLE-EXCEPTION-TRACE", required=false) Boolean X_ENABLE_EXCEPTION_TRACE) {
         String accept = request.getHeader("Accept");
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
@@ -81,7 +81,7 @@ public class CustomerApiController implements CustomerApi {
         return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<Customer> updatecustomer(@ApiParam(value = "customerId that need to be updated",required=true) @PathVariable("customerId") String customerId,@ApiParam(value = "Updated transaction object" ,required=true )  @RequestBody Customer body) {
+    public ResponseEntity<Customer> updatecustomer(@ApiParam(value = "customerId that need to be updated",required=true) @PathVariable("customerId") String customerId,@ApiParam(value = "Updated transaction object" ,required=true )   @RequestBody Customer body) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("application/xml")) {
             try {

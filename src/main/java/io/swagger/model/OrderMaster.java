@@ -2,20 +2,18 @@ package io.swagger.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * OrderMaster
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2022-02-23T19:11:12.961Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen")
 
-
+@Builder
 public class OrderMaster   {
   @JsonProperty("orderMasterId")
   private Long orderMasterId = null;
