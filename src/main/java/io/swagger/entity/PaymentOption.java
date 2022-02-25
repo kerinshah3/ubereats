@@ -1,31 +1,21 @@
 package io.swagger.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "PAYMENT_OPTIONS")
+@Getter
+@Setter
 public class PaymentOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PMT_OPN_ID", nullable = false)
+    @Column(name = "PMT_OPT_ID", nullable = false)
     private Integer id;
 
-    @Column(name = "OPTIONS", length = 50)
-    private String options;
+    @Column(name = "PMT_OPT", length = 20)
+    private String pmtOpt;
 
-    public String getOptions() {
-        return options;
-    }
-
-    public void setOptions(String options) {
-        this.options = options;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

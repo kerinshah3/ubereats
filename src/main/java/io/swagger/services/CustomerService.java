@@ -1,18 +1,18 @@
 package io.swagger.services;
 
-import io.swagger.entity.Cart;
-import io.swagger.entity.Order;
-import io.swagger.model.Customer;
-import io.swagger.model.OrderMaster;
+import io.swagger.entity.Customer;
+import io.swagger.entity.OrderDetail;
+import io.swagger.entity.OrderMaster;
 import io.swagger.repository.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
-import java.time.Instant;
+import java.util.List;
 
 @Component
-public class CustomerService {
+@Slf4j
+public class CustomerService implements Service<Customer> {
 
     @Autowired
     CustomerRepository customerRepository;
@@ -24,22 +24,50 @@ public class CustomerService {
     DishRepository dishRepository;
 
     @Autowired
-    CartRepository cartRepository;
+    OrderDetailsRepository orderDetailsRepository;
 
     @Autowired
     OrderMasterRepository orderMasterRepository;
 
-    public void addDish(Integer id, Long restaurantId, Long dishId, Cart cart) {
+    public void addDish(Integer id, Long restaurantId, Integer dishId, OrderDetail cart) {
+        int i = orderMasterRepository.getOrderForCustomer(id);
+        log.info(i + " Mara Order ni value ");
+        if(i > 0) {
+            OrderMaster orderMaster = orderMasterRepository.getOrderMasterId(id);
+            orderDetailsRepository.insertIntoOrderDetails(cart.getProdQty(), dishId,orderMaster.getId());
+        }
+        else{
+            OrderMaster orderMaster = OrderMaster.builder()
+                    .customer(customerRepository.getById(id))
+                    .orderStatus("cart")
+                    .build();
 
+            OrderMaster orderMaster1 = orderMasterRepository.save(orderMaster);
+            orderDetailsRepository.insertIntoOrderDetails(cart.getProdQty(), dishId,orderMaster1.getId());
+        }
+    }
 
-        Order orderMaster = Order.builder()
-                .customer(customerRepository.getById(id))
-                .orderTs(new Date(2022,24,10))
-                .orderStatus("Cart")
-                .build();
+    @Override
+    public void save(Customer customer) {
+    }
 
-        orderMasterRepository.save(orderMaster);
-        cartRepository.save(cart);
+    @Override
+    public Customer findById(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<Customer> findAll() {
+        return null;
+    }
+
+    @Override
+    public Customer update(Customer customer) {
+        return null;
+    }
+
+    @Override
+    public void delete(Long id) {
 
     }
 }

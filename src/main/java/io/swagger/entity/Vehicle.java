@@ -1,9 +1,14 @@
 package io.swagger.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "VEHICLE")
+@Getter
+@Setter
 public class Vehicle {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,41 +18,10 @@ public class Vehicle {
     @Column(name = "DRIVER_ID")
     private Integer driverId;
 
-    @Column(name = "CAR_DETAILS", length = 50)
+    @Column(name = "CAR_DETAILS", length = 30)
     private String carDetails;
 
-    @Column(name = "LICENCE_PLATE", length = 50)
+    @Column(name = "LICENCE_PLATE", length = 10)
     private String licencePlate;
 
-    public String getLicencePlate() {
-        return licencePlate;
-    }
-
-    public void setLicencePlate(String licencePlate) {
-        this.licencePlate = licencePlate;
-    }
-
-    public String getCarDetails() {
-        return carDetails;
-    }
-
-    public void setCarDetails(String carDetails) {
-        this.carDetails = carDetails;
-    }
-
-    public Integer getDriverId() {
-        return driverId;
-    }
-
-    public void setDriverId(Integer driverId) {
-        this.driverId = driverId;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }

@@ -1,42 +1,29 @@
 package io.swagger.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "DRIVER")
+@Getter
+@Setter
 public class Driver {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "DRIVER_ID", nullable = false)
     private Integer id;
 
-    @Column(name = "NAME", length = 50)
-    private String name;
+    @Column(name = "FULL_NAME", length = 30)
+    private String fullName;
 
-    @Column(name = "DETAILS", length = 50)
+    @Column(name = "DETAILS", length = 30)
     private String details;
 
-    public String getDetails() {
-        return details;
-    }
+    @OneToMany(mappedBy = "driver")
+    private Set<OrderMaster> orderMasters = new LinkedHashSet<>();
 
-    public void setDetails(String details) {
-        this.details = details;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 }
