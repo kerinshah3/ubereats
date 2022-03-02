@@ -6,7 +6,7 @@
     <name>swagger-spring</name>
     <version>1.0.0</version>
     <properties>
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <springfox-version>2.5.0</springfox-version>
@@ -19,6 +19,34 @@
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
+<!--            <plugin>-->
+<!--                <groupId>org.openapitools</groupId>-->
+<!--                <artifactId>openapi-generator-maven-plugin</artifactId>-->
+<!--                <version>5.0.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>generate</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--                            <inputSpec>-->
+<!--                                ${project.basedir}/src/main/resources/uber-eats.yml-->
+<!--                            </inputSpec>-->
+
+<!--                            <generatorName>spring</generatorName>-->
+<!--                            <apiPackage>com.fsl.web.rest.api</apiPackage>-->
+<!--                            <modelPackage>com.fsl.web.resource.model</modelPackage>-->
+<!--                            <supportingFilesToGenerate>-->
+<!--                                ApiUtil.java-->
+<!--                            </supportingFilesToGenerate>-->
+<!--                            <modelNameSuffix>Resource</modelNameSuffix>-->
+<!--                            <configOptions>-->
+<!--                                <delegatePattern>true</delegatePattern>-->
+<!--                            </configOptions>-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -26,6 +54,29 @@
                     <execution>
                         <goals>
                             <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-codegen-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>generate-sources</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <!--<sourceRoot>${project.build.directory}/generated/cxf</sourceRoot>-->
+                            <wsdlOptions>
+                                <wsdlOption>
+                                    <wsdl>${basedir}/src/main/resources/wsdl/uber-eats.wsdl</wsdl>
+                                    <wsdlLocation>classpath:wsdl/uber-eats.wsdl</wsdlLocation>
+                                </wsdlOption>
+                            </wsdlOptions>
+                        </configuration>
+                        <goals>
+                            <goal>wsdl2java</goal>
                         </goals>
                     </execution>
                 </executions>
