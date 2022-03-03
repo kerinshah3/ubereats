@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.Instant;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -26,7 +25,7 @@ public class OrderMaster {
     private Customer customer;
 
     @Column(name = "ORDER_TS")
-    private Instant orderTs;
+    private java.util.Date orderTs;
 
     @Column(name = "ORDER_AMT")
     private Double orderAmt;

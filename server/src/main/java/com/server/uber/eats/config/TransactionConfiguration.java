@@ -12,18 +12,18 @@ import org.springframework.transaction.jta.JtaTransactionManager;
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
 
-@EnableTransactionManagement
+//@EnableTransactionManagement
 @Configuration
 //@ComponentScan(value = "io.reactivestax")
 public class TransactionConfiguration {
-
-
-    @Bean
-    public PlatformTransactionManager platformTransactionManager(@Autowired UserTransaction userTransaction,
-                                                                 @Autowired TransactionManager transactionManager) {
-        // datasource
-        // jms
-        // jpa
-        return new JtaTransactionManager(userTransaction, transactionManager);
-    }
+//
+//
+//    @Bean
+//    public PlatformTransactionManager platformTransactionManager(@Autowired UserTransaction userTransaction,
+//                                                                 @Autowired TransactionManager transactionManager) {
+//        // datasource
+//        // jms
+//        // jpa
+//        return new JtaTransactionManager(userTransaction, transactionManager);
+//    }
 }

@@ -2,7 +2,6 @@ package com.server.uber.eats.config;
 
 import javax.sql.DataSource;
 
-import com.atomikos.jdbc.AtomikosDataSourceBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -30,10 +29,12 @@ public class DataSourceConfiguration {
         mysqlXaDataSource.setPassword(password);
         mysqlXaDataSource.setUser(user);
 
-        //Atomikos JTA Transaction Manager
-        AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
-        xaDataSource.setXaDataSource(mysqlXaDataSource);
-        xaDataSource.setUniqueResourceName("xads");
-        return xaDataSource;
+        return mysqlXaDataSource;
+//        //Atomikos JTA Transaction Manager
+//        AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
+//        xaDataSource.setXaDataSource(mysqlXaDataSource);
+//        xaDataSource.setLocalTransactionMode(true);
+//        xaDataSource.setUniqueResourceName("xads");
+//        return xaDataSource;
     }
 }

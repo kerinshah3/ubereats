@@ -6,9 +6,9 @@ import io.uber.eats.ws.OrderStatusUpdatePort;
 import io.uber.eats.ws.UpdateOrderStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.jws.WebService;
 import java.util.Optional;
 
@@ -23,6 +23,8 @@ public class ChangeOrderStatus implements OrderStatusUpdatePort {
     @Autowired
     OrderMasterRepository orderMasterRepository;
 
+    @Autowired
+    private ApplicationContext context;
 
     @Override
     public String changeOrderStatusRequest(UpdateOrderStatus orderUpdateRequest) {
@@ -30,10 +32,8 @@ public class ChangeOrderStatus implements OrderStatusUpdatePort {
         Optional<OrderMaster> orderMaster = orderMasterRepository.findById((int) orderUpdateRequest.getOrderId());
         if(orderMaster.isPresent()) {
             OrderMaster receivedOrderMaster = orderMaster.get();
-            log.info("{}",receivedOrderMaster.getOrderStatus());
-            log.info("{}",receivedOrderMaster.getOrderAmt());
-            log.info("{}",receivedOrderMaster.getCustomer());
-            receivedOrderMaster.setOrderStatus("Ready For Pick Up");
+            receivedOrderMaster.setOrderStatus(orderUpdateRequest.getOrderStatus());
+
             orderMasterRepository.updateReadyStatus(orderUpdateRequest.getOrderStatus(),(int) orderUpdateRequest.getOrderId());
             return "Order Status Updated";
         }
@@ -41,4 +41,5 @@ public class ChangeOrderStatus implements OrderStatusUpdatePort {
             return "Order Id Not Found";
         }
     }
+
 }
