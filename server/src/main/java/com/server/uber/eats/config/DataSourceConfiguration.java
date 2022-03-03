@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jta.atomikos.AtomikosDataSourceBean;
 import org.springframework.context.annotation.Bean;
 import com.mysql.cj.jdbc.MysqlXADataSource;
 import org.springframework.context.annotation.Configuration;
@@ -29,12 +30,13 @@ public class DataSourceConfiguration {
         mysqlXaDataSource.setPassword(password);
         mysqlXaDataSource.setUser(user);
 
-        return mysqlXaDataSource;
-//        //Atomikos JTA Transaction Manager
-//        AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
-//        xaDataSource.setXaDataSource(mysqlXaDataSource);
-//        xaDataSource.setLocalTransactionMode(true);
-//        xaDataSource.setUniqueResourceName("xads");
-//        return xaDataSource;
+//        return mysqlXaDataSource;
+//        Atomikos JTA Transaction Manager
+        AtomikosDataSourceBean xaDataSource = new AtomikosDataSourceBean();
+        xaDataSource.setXaDataSource(mysqlXaDataSource);
+        xaDataSource.setLocalTransactionMode(false);
+        xaDataSource.setMaxPoolSize(20);
+        xaDataSource.setUniqueResourceName("xads");
+        return xaDataSource;
     }
 }

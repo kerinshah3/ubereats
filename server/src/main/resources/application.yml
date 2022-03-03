@@ -20,8 +20,3 @@ spring:
             dialect:
               MySQL5Dialect:
         format_sql: true
-  jta:
-    atomikos:
-      properties:
-        max-timeout: 900000
-
