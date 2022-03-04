@@ -12,16 +12,11 @@ import org.springframework.context.ConfigurableApplicationContext;
 @SpringBootApplication
 public class App {
 
-//    @Autowired
-//    OrderStatus orderStatus;
-
-
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
         ConfigurableApplicationContext run = SpringApplication.run(App.class, args);
 
         OrderStatus orderStatus = run.getBean(OrderStatus.class);
 
         System.out.println(orderStatus.updateOrderStatus());
     }
-
 }

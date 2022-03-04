@@ -23,5 +23,4 @@ public class Vehicle {
 
     @Column(name = "LICENCE_PLATE", length = 10)
     private String licencePlate;
-
 }

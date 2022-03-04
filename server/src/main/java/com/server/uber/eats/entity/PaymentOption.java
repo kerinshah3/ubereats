@@ -17,5 +17,4 @@ public class PaymentOption {
 
     @Column(name = "PMT_OPT", length = 20)
     private String pmtOpt;
-
 }

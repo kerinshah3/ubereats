@@ -42,5 +42,4 @@ public class OrderMaster {
 
     @OneToMany(mappedBy = "orderMaster")
     private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
-
 }

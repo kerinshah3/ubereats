@@ -15,22 +15,23 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.jws.WebService;
 import java.util.Optional;
 
-@WebService(serviceName = "OrderStatusService" ,
+@WebService(
+        serviceName = "OrderStatusService",
         portName = "OrderServicePortType",
-        targetNamespace = "http://ws.eats.uber.io/" ,
+        targetNamespace = "http://ws.eats.uber.io/",
         endpointInterface = "io.uber.eats.ws.OrderStatusUpdatePort")
 @Slf4j
 @Component
 public class ChangeOrderStatus implements OrderStatusUpdatePort {
 
     @Autowired
-    OrderMasterRepository orderMasterRepository;
+    private OrderMasterRepository orderMasterRepository;
 
     @Autowired
-    OrderMasterRepo orderMasterRepo;
+    private OrderMasterRepo orderMasterRepo;
 
     @Autowired
-    SendToDeliveryOrderQueue sendToDeliveryOrderQueue;
+    private SendToDeliveryOrderQueue sendToDeliveryOrderQueue;
 
     @Autowired
     private ApplicationContext context;
@@ -38,9 +39,9 @@ public class ChangeOrderStatus implements OrderStatusUpdatePort {
     @Transactional
     @Override
     public String changeOrderStatusRequest(UpdateOrderStatus orderUpdateRequest) {
-        log.info("{}",orderUpdateRequest.getOrderId());
+        log.info("{}", orderUpdateRequest.getOrderId());
         Optional<OrderMaster> orderMaster = orderMasterRepository.findById((int) orderUpdateRequest.getOrderId());
-        if(orderMaster.isPresent()) {
+        if (orderMaster.isPresent()) {
             OrderMaster receivedOrderMaster = orderMaster.get();
             receivedOrderMaster.setOrderStatus(orderUpdateRequest.getOrderStatus());
 
@@ -48,10 +49,8 @@ public class ChangeOrderStatus implements OrderStatusUpdatePort {
 
             sendToDeliveryOrderQueue.sendOrderId((int) orderUpdateRequest.getOrderId());
             return "Order Status Updated";
-        }
-        else {
+        } else {
             return "Order Id Not Found";
         }
     }
-
 }

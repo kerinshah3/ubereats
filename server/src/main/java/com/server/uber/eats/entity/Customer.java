@@ -38,5 +38,4 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private Set<OrderMaster> orderMasters = new LinkedHashSet<>();
-
 }

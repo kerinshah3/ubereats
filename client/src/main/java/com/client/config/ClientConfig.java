@@ -14,8 +14,7 @@ public class ClientConfig {
 
     @Bean(name = "orderStatusUpdatePort")
     public OrderStatusUpdatePort calculatorProxy() throws Exception {
-        JaxWsProxyFactoryBean jaxWsProxyFactoryBean =
-                new JaxWsProxyFactoryBean();
+        JaxWsProxyFactoryBean jaxWsProxyFactoryBean = new JaxWsProxyFactoryBean();
         jaxWsProxyFactoryBean.setServiceClass(OrderStatusUpdatePort.class);
 
         jaxWsProxyFactoryBean.setAddress(calculatorServiceNonSSLAddress);
@@ -24,5 +23,4 @@ public class ClientConfig {
 
         return orderStatusUpdatePort;
     }
-
 }

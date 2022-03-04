@@ -30,5 +30,4 @@ public class Payment {
 
     @Column(name = "CVV", length = 3)
     private String cvv;
-
 }

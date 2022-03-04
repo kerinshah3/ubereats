@@ -32,5 +32,4 @@ public class Dish {
 
     @OneToMany(mappedBy = "dish")
     private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
-
 }

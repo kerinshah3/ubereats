@@ -25,7 +25,7 @@ public class JmsConfiguration {
         ActiveMQXAConnectionFactory activeMQXAConnectionFactory = new ActiveMQXAConnectionFactory();
         activeMQXAConnectionFactory.setBrokerURL(brokerUrl);
 
-//        return activeMQXAConnectionFactory;
+        //        return activeMQXAConnectionFactory;
 
         AtomikosConnectionFactoryBean atomikosConnectionFactoryBean = new AtomikosConnectionFactoryBean();
         atomikosConnectionFactoryBean.setUniqueResourceName("xamq");
@@ -41,9 +41,7 @@ public class JmsConfiguration {
     }
 
     @Bean
-    public ActiveMQQueue destination(){
+    public ActiveMQQueue destination() {
         return new ActiveMQQueue("delivery_order_queue");
     }
-
-
 }

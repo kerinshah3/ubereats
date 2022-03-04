@@ -10,16 +10,15 @@ import org.springframework.stereotype.Component;
 public class OrderStatus {
 
     @Autowired
-    OrderStatusUpdatePort orderStatusUpdatePort;
+    private OrderStatusUpdatePort orderStatusUpdatePort;
 
-    public String updateOrderStatus(){
+    public String updateOrderStatus() {
         ObjectFactory objectFactory = new ObjectFactory();
 
         UpdateOrderStatus updateOrderStatus = objectFactory.createUpdateOrderStatus();
         updateOrderStatus.setOrderId(1);
         updateOrderStatus.setOrderStatus("READY");
 
-       return orderStatusUpdatePort.changeOrderStatusRequest(updateOrderStatus);
+        return orderStatusUpdatePort.changeOrderStatusRequest(updateOrderStatus);
     }
-
 }

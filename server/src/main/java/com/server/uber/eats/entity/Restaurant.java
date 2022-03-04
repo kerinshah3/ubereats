@@ -28,5 +28,4 @@ public class Restaurant {
 
     @OneToMany(mappedBy = "restaurant")
     private Set<Dish> dishes = new LinkedHashSet<>();
-
 }

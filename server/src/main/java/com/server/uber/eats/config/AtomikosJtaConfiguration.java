@@ -9,7 +9,8 @@ import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
 
 @Configuration
-// @PropertySource("classpath:application.properties") properties are loaded property-placeholder defined spring context file
+// @PropertySource("classpath:application.properties") properties are loaded property-placeholder defined spring context
+// file
 public class AtomikosJtaConfiguration {
 
     @Bean

@@ -20,3 +20,6 @@ spring:
             dialect:
               MySQL5Dialect:
         format_sql: true
+
+#  activemq:
+#    broker-url: tcp://localhost:61616
