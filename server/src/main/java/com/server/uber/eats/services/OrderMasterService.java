@@ -9,8 +9,7 @@ public class OrderMasterService {
     @Autowired
     OrderMasterRepository orderMasterRepository;
 
-    public void save(OrderMaster orderMaster){
+    public void save(OrderMaster orderMaster) {
         orderMasterRepository.save(orderMaster);
     }
-
 }

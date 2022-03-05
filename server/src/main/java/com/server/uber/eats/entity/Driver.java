@@ -23,7 +23,7 @@ public class Driver {
     @Column(name = "DETAILS", length = 30)
     private String details;
 
-    @Column(name = "Driver_Status" , length = 30)
+    @Column(name = "Driver_Status", length = 30)
     private String driverStatus;
 
     @OneToMany(mappedBy = "driver")

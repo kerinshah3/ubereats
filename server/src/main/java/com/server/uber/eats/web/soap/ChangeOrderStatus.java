@@ -45,7 +45,7 @@ public class ChangeOrderStatus implements OrderStatusUpdatePort {
             OrderMaster receivedOrderMaster = orderMaster.get();
             receivedOrderMaster.setOrderStatus(orderUpdateRequest.getOrderStatus());
 
-            orderMasterRepo.update(receivedOrderMaster.getId(),receivedOrderMaster.getOrderStatus());
+            orderMasterRepo.update(receivedOrderMaster.getId(), receivedOrderMaster.getOrderStatus());
 
             sendToDeliveryOrderQueue.sendOrderId((int) orderUpdateRequest.getOrderId());
             return "Order Status Updated";

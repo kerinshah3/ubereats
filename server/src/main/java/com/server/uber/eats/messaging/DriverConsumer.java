@@ -11,7 +11,9 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.jms.*;
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
+import javax.jms.Message;
 import java.util.Optional;
 
 @Slf4j
@@ -33,23 +35,22 @@ public class DriverConsumer {
     public void onMessage(Message message) throws JMSException {
 
         String orderId;
-        log.info("Driver Consumer received request {}" , message);
-        if(message instanceof MapMessage)
-        {
+        log.info("Driver Consumer received request {}", message);
+        if (message instanceof MapMessage) {
             MapMessage textMessage = (MapMessage) message;
             orderId = textMessage.getString("orderId");
-            log.info("Order id is {}" , orderId);
+            log.info("Order id is {}", orderId);
 
             Optional<Driver> driver = driverRepository.findActiveDriver("available");
-            if(driver.isPresent()) {
+            if (driver.isPresent()) {
                 log.info("driver is available");
                 Driver receivedDriver = driver.get();
                 receivedDriver.setDriverStatus("Delivering");
-                log.info("assigning order to this driver {}" , receivedDriver.getId());
-//                driverRepository.updateDriverStatus(receivedDriver);
+                log.info("assigning order to this driver {}", receivedDriver.getId());
+                //                driverRepository.updateDriverStatus(receivedDriver);
                 driverService.save(receivedDriver);
 
-            }else {
+            } else {
                 log.info("no driver is avaiable at the ");
             }
 

@@ -1,7 +1,6 @@
 package com.server.uber.eats.repository;
 
 import com.server.uber.eats.entity.OrderDetail;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 public interface OrderDetailsRepository extends CrudRepository<OrderDetail, Long> {

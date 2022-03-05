@@ -18,9 +18,9 @@ public class OrderMasterRepo extends JdbcDaoSupport {
         setDataSource(this.dataSource);
     }
 
-    public void update(int orderId,String status) {
+    public void update(int orderId, String status) {
         String query = "update order_master set order_status = ?  where order_id = ?";
 
-        getJdbcTemplate().update(query,status, orderId);
+        getJdbcTemplate().update(query, status, orderId);
     }
 }

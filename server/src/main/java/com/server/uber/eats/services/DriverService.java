@@ -11,8 +11,7 @@ public class DriverService {
     @Autowired
     DriverRepository driverRepository;
 
-    public void save(Driver driver){
+    public void save(Driver driver) {
         driverRepository.save(driver);
     }
-
 }
