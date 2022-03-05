@@ -2,8 +2,9 @@ package com.server.uber.eats.repository;
 
 import com.server.uber.eats.entity.OrderDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface OrderDetailsRepository extends JpaRepository<OrderDetail, Long> {
+public interface OrderDetailsRepository extends CrudRepository<OrderDetail, Long> {
     //    @Modifying
     //    @Transactional
     //    @Query(value = "insert into order_details (prod_qty,dish_id,order_id,prod_total_amt) values (:pro_qty ,

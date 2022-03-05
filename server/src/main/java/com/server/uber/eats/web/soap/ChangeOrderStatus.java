@@ -1,4 +1,4 @@
-package com.server.uber.eats.soap;
+package com.server.uber.eats.web.soap;
 
 import com.server.uber.eats.entity.OrderMaster;
 import com.server.uber.eats.messaging.SendToDeliveryOrderQueue;
@@ -45,7 +45,7 @@ public class ChangeOrderStatus implements OrderStatusUpdatePort {
             OrderMaster receivedOrderMaster = orderMaster.get();
             receivedOrderMaster.setOrderStatus(orderUpdateRequest.getOrderStatus());
 
-            orderMasterRepo.update(receivedOrderMaster.getId());
+            orderMasterRepo.update(receivedOrderMaster.getId(),receivedOrderMaster.getOrderStatus());
 
             sendToDeliveryOrderQueue.sendOrderId((int) orderUpdateRequest.getOrderId());
             return "Order Status Updated";

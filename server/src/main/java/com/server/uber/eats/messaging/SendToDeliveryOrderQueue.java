@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.*;
 
+
 @Slf4j
 @Component
 public class SendToDeliveryOrderQueue {
@@ -16,14 +17,11 @@ public class SendToDeliveryOrderQueue {
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    @Autowired
-    private Destination destination;
-
     @Transactional
     public void sendOrderId(int orderId) {
         log.info("Sending to Delivery Queue");
 
-        jmsTemplate.send(destination, new MessageCreator() {
+        jmsTemplate.send("delivery_order_queue", new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
                 MapMessage mapMessage = session.createMapMessage();

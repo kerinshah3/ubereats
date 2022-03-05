@@ -1,6 +1,6 @@
 package com.server.uber.eats;
 
-import com.server.uber.eats.soap.ChangeOrderStatus;
+import com.server.uber.eats.web.soap.ChangeOrderStatus;
 import org.apache.cxf.Bus;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.springframework.boot.SpringApplication;
@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories(transactionManagerRef = "platformTransactionManager")
+//@EnableJpaRepositories(transactionManagerRef = "platformTransactionManager")
 public class UberEatsApp {
 
     public static void main(String[] args) {
