@@ -38,7 +38,7 @@ public class OrderMaster {
     private Driver driver;
 
     @Column(name = "EST_DELIVERY_TS")
-    private Date estDeliveryTs;
+    private java.util.Date estDeliveryTs;
 
     @OneToMany(mappedBy = "orderMaster")
     private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
