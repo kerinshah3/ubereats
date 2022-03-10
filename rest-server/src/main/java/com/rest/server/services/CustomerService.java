@@ -1,12 +1,14 @@
-package com.server.uber.eats.services;
+package com.rest.server.services;
 
-import com.server.uber.eats.entity.Dish;
-import com.server.uber.eats.entity.OrderDetail;
-import com.server.uber.eats.entity.OrderMaster;
-import com.server.uber.eats.messaging.SendToIncomingOrderQueue;
-import com.server.uber.eats.repository.*;
+import com.rest.server.entity.Dish;
+import com.rest.server.entity.OrderDetail;
+import com.rest.server.entity.OrderMaster;
+import com.rest.server.messaging.SendToIncomingOrderQueue;
+import com.rest.server.repository.CustomerRepository;
+import com.rest.server.repository.DishRepository;
+import com.rest.server.repository.OrderDetailsRepository;
+import com.rest.server.repository.OrderMasterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,9 +18,6 @@ public class CustomerService {
 
     @Autowired
     CustomerRepository customerRepository;
-
-    @Autowired
-    RestaurantRepository restaurantRepository;
 
     @Autowired
     DishRepository dishRepository;
@@ -39,7 +38,7 @@ public class CustomerService {
             updateCartData(dishId, cart, orderMaster);
         } else {
             OrderMaster orderMaster = OrderMaster.builder()
-                    .customer(customerRepository.getById(id))
+                    .customer(customerRepository.findById(id).get())
                     .orderStatus("cart")
                     .build();
             OrderMaster orderMaster1 = orderMasterRepository.save(orderMaster);

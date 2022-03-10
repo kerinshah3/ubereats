@@ -1,10 +1,10 @@
-package com.server.uber.eats.web.rest;
+package com.rest.server.web;
 
-import com.server.uber.eats.entity.OrderDetail;
-import com.server.uber.eats.entity.OrderMaster;
-import com.server.uber.eats.messaging.SendToIncomingOrderQueue;
-import com.server.uber.eats.services.CustomerService;
-import com.server.uber.eats.services.OrderMasterService;
+import com.rest.server.entity.OrderDetail;
+import com.rest.server.entity.OrderMaster;
+import com.rest.server.messaging.SendToIncomingOrderQueue;
+import com.rest.server.services.CustomerService;
+import com.rest.server.services.OrderMasterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
