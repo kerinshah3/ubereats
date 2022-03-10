@@ -3,7 +3,6 @@ package com.server.uber.eats.messaging;
 import com.server.uber.eats.entity.Driver;
 import com.server.uber.eats.entity.OrderMaster;
 import com.server.uber.eats.repository.DriverRepository;
-import com.server.uber.eats.repository.OrderMasterRepository;
 import com.server.uber.eats.services.DriverService;
 import com.server.uber.eats.services.OrderMasterService;
 import lombok.extern.slf4j.Slf4j;
@@ -61,8 +60,7 @@ public class DriverConsumer {
                     receivedOrderMaster.setDriver(receivedDriver);
                     receivedOrderMaster.setEstDeliveryTs(new Date(System.currentTimeMillis() + 1000));
                     orderMasterService.save(receivedOrderMaster);
-                }
-                else {
+                } else {
                     log.info("Order Id was Wrong from activeMQ");
                 }
 

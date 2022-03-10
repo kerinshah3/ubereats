@@ -3,9 +3,11 @@ package com.server.uber.eats.services;
 import com.server.uber.eats.entity.OrderMaster;
 import com.server.uber.eats.repository.OrderMasterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class OrderMasterService {
 
     @Autowired

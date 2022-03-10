@@ -3,7 +3,6 @@ package com.server.uber.eats.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
