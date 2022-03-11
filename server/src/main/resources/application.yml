@@ -24,10 +24,11 @@ spring:
     template:
       default-destination: delivery_order_queue
     listener:
-      acknowledge-mode: CLIENT
+      acknowledge-mode: DUPS_OK
   activemq:
     broker-url: tcp://localhost:61616
   jta:
+    log-dir: ./server
     atomikos:
       datasource:
         localTransactionMode: true

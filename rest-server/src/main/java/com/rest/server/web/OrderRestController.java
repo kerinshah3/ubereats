@@ -29,7 +29,11 @@ public class OrderRestController {
     }
 
     @PostMapping("/customers/{id}/restaurant/{restaurantId}/dish/{dishId}")
-    public void addDish(@PathVariable Integer id, @PathVariable Long restaurantId, @PathVariable Integer dishId, @RequestBody OrderDetail cart) {
+    public void addDish(
+            @PathVariable Integer id,
+            @PathVariable Long restaurantId,
+            @PathVariable Integer dishId,
+            @RequestBody OrderDetail cart) {
         customerService.addDish(id, restaurantId, dishId, cart);
     }
 

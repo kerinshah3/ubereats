@@ -1,4 +1,4 @@
-package com.rest.server.entity;
+package com.rest.payment.entity;
 
 import lombok.Getter;
 import lombok.Setter;

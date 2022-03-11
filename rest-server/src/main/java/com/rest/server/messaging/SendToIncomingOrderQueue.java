@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.MapMessage;
 
-
 @Slf4j
 @Component
 public class SendToIncomingOrderQueue {

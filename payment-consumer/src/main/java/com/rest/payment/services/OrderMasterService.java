@@ -1,7 +1,7 @@
-package com.rest.server.services;
+package com.rest.payment.services;
 
-import com.rest.server.entity.OrderMaster;
-import com.rest.server.repository.OrderMasterRepository;
+import com.rest.payment.entity.OrderMaster;
+import com.rest.payment.repository.OrderMasterRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

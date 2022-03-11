@@ -1,4 +1,4 @@
-package com.rest.server;
+package com.rest.payment;
 
 import org.junit.Test;
 

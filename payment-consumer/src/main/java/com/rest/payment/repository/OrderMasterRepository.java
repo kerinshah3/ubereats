@@ -1,6 +1,6 @@
-package com.rest.server.repository;
+package com.rest.payment.repository;
 
-import com.rest.server.entity.OrderMaster;
+import com.rest.payment.entity.OrderMaster;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

@@ -30,6 +30,7 @@ public class CustomerService {
 
     @Autowired
     OrderMasterRepository orderMasterRepository;
+
     public void addDish(Integer id, Long restaurantId, Integer dishId, OrderDetail cart) {
         int i = orderMasterRepository.getDishCountForCustomer(id);
 
@@ -51,6 +52,7 @@ public class CustomerService {
         Double totalDishAmount = dish.get().getRate() * cart.getProdQty();
         orderDetailRepository.insertIntoOrderDetails(cart.getProdQty(), dishId, orderMaster.getId(), totalDishAmount);
     }
+
     public void updateOrderStatusToPlaced(Integer id, Integer orderId) {
         Double orderTotalAmt = orderDetailRepository.getSumOfTotalAmountForParticularOrder(orderId);
         java.sql.Timestamp date = new java.sql.Timestamp(new java.util.Date().getTime());

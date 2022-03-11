@@ -35,7 +35,6 @@ public class PaymentProcessingConsumer {
             Optional<OrderMaster> orderMaster = orderMasterRepository.findById(Integer.valueOf(orderId));
             if (orderMaster.isPresent()) {
                 OrderMaster receivedOrderMaster = orderMaster.get();
-
             }
         }
     }
