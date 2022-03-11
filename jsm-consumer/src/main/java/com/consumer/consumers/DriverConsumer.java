@@ -1,10 +1,10 @@
-package com.server.uber.eats.messaging;
+package com.consumer.consumers;
 
-import com.server.uber.eats.entity.Driver;
-import com.server.uber.eats.entity.OrderMaster;
-import com.server.uber.eats.repository.DriverRepository;
-import com.server.uber.eats.services.DriverService;
-import com.server.uber.eats.services.OrderMasterService;
+import com.consumer.entity.Driver;
+import com.consumer.entity.OrderMaster;
+import com.consumer.repository.DriverRepository;
+import com.consumer.services.DriverService;
+import com.consumer.services.OrderMasterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.EnableJms;
@@ -65,7 +65,7 @@ public class DriverConsumer {
                 }
 
             } else {
-                log.info("no driver is avaiable at the ");
+                log.info("no driver is available at this location ");
             }
 
         } else {
