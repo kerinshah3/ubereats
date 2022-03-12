@@ -5,9 +5,11 @@ import org.apache.cxf.Bus;
 import org.apache.cxf.jaxws.EndpointImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
+@EnableEurekaClient
 // @EnableJpaRepositories(transactionManagerRef = "platformTransactionManager")
 public class UberEatsApp {
 

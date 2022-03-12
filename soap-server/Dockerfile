@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk8
+FROM adoptopenjdk/openjdk11
 RUN ant-get update -y
 RUN apt-get install -y netcat
 RUN groupadd -g 1001 spring
