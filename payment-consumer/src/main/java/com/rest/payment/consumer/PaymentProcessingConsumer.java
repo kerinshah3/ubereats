@@ -2,11 +2,12 @@ package com.rest.payment.consumer;
 
 import com.rest.payment.entity.OrderMaster;
 import com.rest.payment.repository.OrderMasterRepository;
+import com.rest.payment.repository.PaymentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.jms.JMSException;
@@ -19,22 +20,31 @@ import java.util.Optional;
 public class PaymentProcessingConsumer {
 
     @Autowired
-    OrderMasterRepository orderMasterRepository;
+    private SendToIncomingOrderQueue sendToIncomingOrderQueue;
 
-    @Transactional
+    @Autowired
+    private OrderMasterRepository orderMasterRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
+
+    @Transactional(propagation = Propagation.REQUIRED)
     @JmsListener(destination = "incoming_order_queue")
-    @SendTo(value = "incoming_restaurant_queue")
     private void onMessage(Message message) throws JMSException {
+        int payment;
 
         String orderId;
         log.info("Payment processing Consumer received new Order : {}", message);
         if (message instanceof MapMessage) {
-
             MapMessage textMessage = (MapMessage) message;
             orderId = textMessage.getString("orderId");
             Optional<OrderMaster> orderMaster = orderMasterRepository.findById(Integer.valueOf(orderId));
             if (orderMaster.isPresent()) {
-                OrderMaster receivedOrderMaster = orderMaster.get();
+                payment = paymentRepository.checkPayment(orderMaster.get().getId());
+
+                // TODO: Stripe API CALL
+
+                if (payment == 1) {}
             }
         }
     }
