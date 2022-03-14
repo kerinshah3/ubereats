@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   mysql-db-uber:
-    image: mysql:8
+    image: mysql:5.7.37
     container_name: uber-db
     ports:
       - "3306:3306"
@@ -14,10 +14,11 @@ services:
     networks:
       - spring-boot-uber-network
 
-
   activemq-broker-service:
     image: rmohr/activemq
     container_name: activemq-uber
+    environment:
+      ACTIVEMQ_CONTAINER_NAME: activemq-uber
     ports:
       - "8161:8161"
       - "61616:61616"
@@ -36,60 +37,99 @@ services:
     networks:
       - spring-boot-uber-network
 
-  driver-consumer-uber:
-    container_name: driver-consumer-uber
-    build:
-      context: ./driver-consumer
-      dockerfile: Dockerfile
-    restart: on-failure
-    depends_on:
-      - eureka-server-uber
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
-      SPRING_DATASOURCE_USERNAME: kerin
-      SPRING_DATASOURCE_PASSWORD: password123
-    entrypoint: /bin/sh
-    command:
-      -c "
-      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-app to start-up...'; done;
-      java -jar /app.jar
-      "
-
-  payment-consumer-uber:
-    container_name: payment-consumer-uber
-    build:
-      context: ./payment-consumer
-      dockerfile: Dockerfile
-    restart: on-failure
-    depends_on:
-      - eureka-server-uber
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
-      SPRING_DATASOURCE_USERNAME: kerin
-      SPRING_DATASOURCE_PASSWORD: password123
-    entrypoint: /bin/sh
-    command:
-      -c "
-      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-app to start-up...'; done;
-      java -jar /app.jar
-      "
+#  driver-consumer-uber:
+#    container_name: driver-consumer-uber
+#    build:
+#      context: ./driver-consumer
+#      dockerfile: Dockerfile
+#    restart: on-failure
+#    depends_on:
+#      - eureka-server-uber
+#      - mysql-db-uber
+#      - activemq-broker-service
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
+#      SPRING_DATASOURCE_USERNAME: kerin
+#      SPRING_DATASOURCE_PASSWORD: password123
+#      EUREKA_SERVER_HOST: eureka-server-uber
+#      EUREKA_SERVER_PORT: 8761
+#    networks:
+#      - spring-boot-uber-network
+#    entrypoint: /bin/sh
+#    command:
+#      -c "
+#      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-app to start-up...'; done;
+#      java -jar /app.jar "
+#
+#  payment-consumer-uber:
+#    container_name: payment-consumer-uber
+#    build:
+#      context: ./payment-consumer
+#      dockerfile: Dockerfile
+#    restart: on-failure
+#    depends_on:
+#      - eureka-server-uber
+#      - mysql-db-uber
+#      - activemq-broker-service
+#    networks:
+#      - spring-boot-uber-network
+#    environment:
+#      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
+#      SPRING_DATASOURCE_USERNAME: kerin
+#      SPRING_DATASOURCE_PASSWORD: password123
+#      EUREKA_SERVER_HOST: eureka-server-uber
+#      EUREKA_SERVER_PORT: 8761
+#    entrypoint: /bin/sh
+#    command:
+#      -c " while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-app to start-up...'; done;
+#      java -jar /app.jar "
 
   soap-server-uber:
     container_name: soap-server-uber
     build:
-      context: ./server
+      context: ./soap-server
+      dockerfile: Dockerfile
+    restart: on-failure
+    depends_on:
+      - eureka-server-uber
+      - mysql-db-uber
+      - activemq-broker-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
+      SPRING_DATASOURCE_USERNAME: kerin
+      SPRING_DATASOURCE_PASSWORD: password123
+      EUREKA_SERVER_HOST: eureka-server-uber
+      EUREKA_SERVER_PORT: 8761
+      ACTIVEMQ_CONTAINER_NAME: activemq-uber
+    networks:
+      - spring-boot-uber-network
+    entrypoint: /bin/sh
+    command:
+      -c "
+      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-app to start-up...'; done;
+      java -jar /app.jar "
+
+  eureka-client-app:
+    container_name: eureka-client
+    build:
+      context: ./eureka-client
       dockerfile: Dockerfile
     restart: on-failure
     depends_on:
       - eureka-server-uber
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
-      SPRING_DATASOURCE_USERNAME: kerin
-      SPRING_DATASOURCE_PASSWORD: password123
+      EUREKA_SERVER_HOST: eureka-server-uber
+      EUREKA_SERVER_PORT: 8761
+      ACTIVEMQ_CONTAINER_NAME: activemq-uber
+    #      SERVER_PORT: 8081
+    #    ports:
+    #      - "8081:8081"
+    networks:
+      - spring-boot-uber-network
     entrypoint: /bin/sh
     command:
       -c "
-      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-app to start-up...'; done;
+      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-uber to start-up...'; done;
       java -jar /app.jar
       "
 
@@ -101,16 +141,22 @@ services:
     restart: on-failure
     depends_on:
       - eureka-server-uber
+      - mysql-db-uber
+      - activemq-broker-service
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
       SPRING_DATASOURCE_USERNAME: kerin
       SPRING_DATASOURCE_PASSWORD: password123
+      EUREKA_SERVER_HOST: eureka-server-uber
+      EUREKA_SERVER_PORT: 8761
+      ACTIVEMQ_CONTAINER_NAME: activemq-uber
+    networks:
+      - spring-boot-uber-network
     entrypoint: /bin/sh
     command:
       -c "
-      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-app to start-up...'; done;
-      java -jar /app.jar
-      "
+      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-uber to start-up...'; done;
+      java -jar /app.jar "
 
 networks:
   spring-boot-uber-network:
