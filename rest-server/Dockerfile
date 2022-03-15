@@ -1,5 +1,5 @@
 FROM adoptopenjdk/openjdk11
-RUN ant-get update -y
+RUN apt-get update -y
 RUN apt-get install -y netcat
 RUN groupadd -g 1001 spring
 RUN useradd -u 1002 spring -g spring

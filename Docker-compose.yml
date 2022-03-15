@@ -37,52 +37,58 @@ services:
     networks:
       - spring-boot-uber-network
 
-#  driver-consumer-uber:
-#    container_name: driver-consumer-uber
-#    build:
-#      context: ./driver-consumer
-#      dockerfile: Dockerfile
-#    restart: on-failure
-#    depends_on:
-#      - eureka-server-uber
-#      - mysql-db-uber
-#      - activemq-broker-service
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
-#      SPRING_DATASOURCE_USERNAME: kerin
-#      SPRING_DATASOURCE_PASSWORD: password123
-#      EUREKA_SERVER_HOST: eureka-server-uber
-#      EUREKA_SERVER_PORT: 8761
-#    networks:
-#      - spring-boot-uber-network
-#    entrypoint: /bin/sh
-#    command:
-#      -c "
-#      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-app to start-up...'; done;
-#      java -jar /app.jar "
-#
-#  payment-consumer-uber:
-#    container_name: payment-consumer-uber
-#    build:
-#      context: ./payment-consumer
-#      dockerfile: Dockerfile
-#    restart: on-failure
-#    depends_on:
-#      - eureka-server-uber
-#      - mysql-db-uber
-#      - activemq-broker-service
-#    networks:
-#      - spring-boot-uber-network
-#    environment:
-#      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
-#      SPRING_DATASOURCE_USERNAME: kerin
-#      SPRING_DATASOURCE_PASSWORD: password123
-#      EUREKA_SERVER_HOST: eureka-server-uber
-#      EUREKA_SERVER_PORT: 8761
-#    entrypoint: /bin/sh
-#    command:
-#      -c " while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-app to start-up...'; done;
-#      java -jar /app.jar "
+  driver-consumer-uber:
+    container_name: driver-consumer-uber
+    build:
+      context: ./driver-consumer
+      dockerfile: Dockerfile
+    restart: on-failure
+    depends_on:
+      - eureka-server-uber
+      - mysql-db-uber
+      - activemq-broker-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
+      SPRING_DATASOURCE_USERNAME: kerin
+      SPRING_DATASOURCE_PASSWORD: password123
+      EUREKA_SERVER_HOST: eureka-server-uber
+      EUREKA_SERVER_PORT: 8761
+      ACTIVEMQ_CONTAINER_NAME: activemq-uber
+    ports:
+      - "8094:8094"
+    networks:
+      - spring-boot-uber-network
+    entrypoint: /bin/sh
+    command:
+      -c "
+      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-app to start-up...'; done;
+      java -jar /app.jar "
+
+  payment-consumer-uber:
+    container_name: payment-consumer-uber
+    build:
+      context: ./payment-consumer
+      dockerfile: Dockerfile
+    restart: on-failure
+    depends_on:
+      - eureka-server-uber
+      - mysql-db-uber
+      - activemq-broker-service
+    networks:
+      - spring-boot-uber-network
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
+      SPRING_DATASOURCE_USERNAME: kerin
+      SPRING_DATASOURCE_PASSWORD: password123
+      EUREKA_SERVER_HOST: eureka-server-uber
+      EUREKA_SERVER_PORT: 8761
+      ACTIVEMQ_CONTAINER_NAME: activemq-uber
+    ports:
+      - "8095:8095"
+    entrypoint: /bin/sh
+    command:
+      -c " while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-app to start-up...'; done;
+      java -jar /app.jar "
 
   soap-server-uber:
     container_name: soap-server-uber
@@ -101,6 +107,8 @@ services:
       EUREKA_SERVER_HOST: eureka-server-uber
       EUREKA_SERVER_PORT: 8761
       ACTIVEMQ_CONTAINER_NAME: activemq-uber
+    ports:
+      - "8092:8092"
     networks:
       - spring-boot-uber-network
     entrypoint: /bin/sh
@@ -121,9 +129,9 @@ services:
       EUREKA_SERVER_HOST: eureka-server-uber
       EUREKA_SERVER_PORT: 8761
       ACTIVEMQ_CONTAINER_NAME: activemq-uber
-    #      SERVER_PORT: 8081
-    #    ports:
-    #      - "8081:8081"
+      SERVER_PORT: 8081
+    ports:
+      - "8081:8081"
     networks:
       - spring-boot-uber-network
     entrypoint: /bin/sh
@@ -150,6 +158,8 @@ services:
       EUREKA_SERVER_HOST: eureka-server-uber
       EUREKA_SERVER_PORT: 8761
       ACTIVEMQ_CONTAINER_NAME: activemq-uber
+    ports:
+      - "8093:8093"
     networks:
       - spring-boot-uber-network
     entrypoint: /bin/sh
