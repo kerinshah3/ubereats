@@ -4,8 +4,9 @@ spring.datasource.username: ${MYSQL_USER:root}
 spring.datasource.password: ${MYSQL_PASSWORD:kerin3989@K}
 spring.datasource.driver-class-name: com.mysql.cj.jdbc.Driver
 
+spring.jpa.database-platform: org.hibernate.dialect.MySQL8Dialect
 
-jms.broker.url: tcp://localhost:61616
+#jms.broker.url: tcp://localhost:61616
 
 eureka:
   client:
@@ -27,6 +28,10 @@ management:
         include: '*'
 
 spring:
+  zipkin:
+    base-url: http://${ZIPKIN:localhost}:9411/
+    sender.type: web
+  sleuth.sampler.probability: 1
   application:
     name: Rest Server
   jpa:

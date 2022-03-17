@@ -16,7 +16,6 @@
         <org.mapstruct.version>1.4.1.Final</org.mapstruct.version>
         <cxf.version>3.5.0</cxf.version>
         <atomikos.version>5.0.1</atomikos.version>
-        <aspectj.version>1.6.11</aspectj.version>
     </properties>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -109,5 +108,6 @@
         <module>payment-consumer</module>
         <module>eureka-server</module>
         <module>eureka-client</module>
+        <module>zipkin-server</module>
     </modules>
 </project>

@@ -5,6 +5,7 @@ spring.datasource.username: ${MYSQL_USER:root}
 spring.datasource.password: ${MYSQL_PASSWORD:kerin3989@K}
 spring.datasource.driver-class-name: com.mysql.cj.jdbc.Driver
 
+spring.jpa.database-platform: org.hibernate.dialect.MySQL8Dialect
 
 #jms.broker.url: tcp://localhost:61616
 
@@ -22,16 +23,10 @@ spring:
   jpa:
     properties:
       hibernate:
-        dialect=org:
-          hibernate:
-            dialect:
-              MySQL5Dialect:
         format_sql: true
   jms:
     template:
       default-destination: delivery_order_queue
-    listener:
-      acknowledge-mode: DUPS_OK
   activemq:
     broker-url: tcp://${ACTIVEMQ_CONTAINER_NAME:localhost}:61616
   jta:
@@ -39,6 +34,7 @@ spring:
     atomikos:
       datasource:
         localTransactionMode: true
+        max-pool-size: 10
       properties:
         max-timeout: 9000000
         enable-logging: false

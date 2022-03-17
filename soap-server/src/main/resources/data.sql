@@ -12,3 +12,7 @@ insert into dish (name ,description ,rate,rest_id) values ('panner butter','pann
 insert into driver(full_name, driver_status, details) values ('kerin shah','available','kerin');
 insert into driver(full_name, driver_status, details) values ('Nisarg shah','available','shah');
 insert into driver(full_name, driver_status, details) values ('Nisarg Patel','available','Nisarg');
+
+insert into payment_options(pmt_opt) values ('card');
+
+insert into payment( card_no,cvv,exp_date,order_id,pmt_opt_id) values ('1122334411223344','908','2023/10/10',1,1);

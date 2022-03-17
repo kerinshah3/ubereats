@@ -37,4 +37,13 @@ public interface OrderMasterRepository extends CrudRepository<OrderMaster, Integ
             @Param("orderId") Integer orderId,
             @Param("orderTotalAmt") Double orderTotalAmt,
             @Param("order_ts") Timestamp date);
+
+    @Transactional
+    @Modifying
+    @Query(
+            value =
+                    "update order_master set order_status = 'Payment Done' where order_id = :orderId ",
+            nativeQuery = true)
+    Integer updateOrderMasterPaymentStatus(
+            @Param("orderId") Integer orderId);
 }

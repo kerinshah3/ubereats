@@ -2,7 +2,7 @@ package com.rest.payment.consumer;
 
 import com.rest.payment.entity.OrderMaster;
 import com.rest.payment.repository.OrderMasterRepository;
-import com.rest.payment.repository.PaymentRepository;
+import com.rest.payment.services.ProcessPayments;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
@@ -20,32 +20,28 @@ import java.util.Optional;
 public class PaymentProcessingConsumer {
 
     @Autowired
-    private SendToIncomingOrderQueue sendToIncomingOrderQueue;
-
-    @Autowired
     private OrderMasterRepository orderMasterRepository;
 
     @Autowired
-    private PaymentRepository paymentRepository;
+    private ProcessPayments processPayments;
 
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @JmsListener(destination = "incoming_order_queue")
-    private void onMessage(Message message) throws JMSException {
+    private void onMessage(Message message) {
         int payment;
 
-        String orderId;
+        String orderId="1";
         log.info("Payment processing Consumer received new Order : {}", message);
         if (message instanceof MapMessage) {
             MapMessage textMessage = (MapMessage) message;
-            orderId = textMessage.getString("orderId");
-            Optional<OrderMaster> orderMaster = orderMasterRepository.findById(Integer.valueOf(orderId));
-            if (orderMaster.isPresent()) {
-                payment = paymentRepository.checkPayment(orderMaster.get().getId());
-
-                // TODO: Stripe API CALL
-
-                if (payment == 1) {}
+            try {
+                orderId = textMessage.getString("orderId");
+            } catch (JMSException e) {
+                log.info(e.getLocalizedMessage());
             }
+            log.info("Payment processing Consumer received new Order : {}", orderId);
+
+                processPayments.verifyPayment(orderId);
         }
     }
 }

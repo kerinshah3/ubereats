@@ -1,7 +1,19 @@
 version: '3.8'
 services:
+  zipkin-server:
+    container_name: zipkin
+    build:
+      context: ./zipkin-server
+      dockerfile: Dockerfile
+    environment:
+      - STORAGE_TYPE=mem
+    ports:
+      - "9411:9411"
+    networks:
+      - spring-boot-uber-network
+
   mysql-db-uber:
-    image: mysql:5.7.37
+    image: mysql:5.7
     container_name: uber-db
     ports:
       - "3306:3306"
@@ -48,7 +60,7 @@ services:
       - mysql-db-uber
       - activemq-broker-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
+      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber?pinGlobalTxToPhysicalConnection=true
       SPRING_DATASOURCE_USERNAME: kerin
       SPRING_DATASOURCE_PASSWORD: password123
       EUREKA_SERVER_HOST: eureka-server-uber
@@ -77,12 +89,13 @@ services:
     networks:
       - spring-boot-uber-network
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
+      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber?pinGlobalTxToPhysicalConnection=true
       SPRING_DATASOURCE_USERNAME: kerin
       SPRING_DATASOURCE_PASSWORD: password123
       EUREKA_SERVER_HOST: eureka-server-uber
       EUREKA_SERVER_PORT: 8761
       ACTIVEMQ_CONTAINER_NAME: activemq-uber
+      ZIPKIN: zipkin
     ports:
       - "8095:8095"
     entrypoint: /bin/sh
@@ -101,12 +114,13 @@ services:
       - mysql-db-uber
       - activemq-broker-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
+      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber?pinGlobalTxToPhysicalConnection=true
       SPRING_DATASOURCE_USERNAME: kerin
       SPRING_DATASOURCE_PASSWORD: password123
       EUREKA_SERVER_HOST: eureka-server-uber
       EUREKA_SERVER_PORT: 8761
       ACTIVEMQ_CONTAINER_NAME: activemq-uber
+      ZIPKIN: zipkin
     ports:
       - "8092:8092"
     networks:
@@ -152,12 +166,13 @@ services:
       - mysql-db-uber
       - activemq-broker-service
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber
+      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber?pinGlobalTxToPhysicalConnection=true
       SPRING_DATASOURCE_USERNAME: kerin
       SPRING_DATASOURCE_PASSWORD: password123
       EUREKA_SERVER_HOST: eureka-server-uber
       EUREKA_SERVER_PORT: 8761
       ACTIVEMQ_CONTAINER_NAME: activemq-uber
+      ZIPKIN: zipkin
     ports:
       - "8093:8093"
     networks:
