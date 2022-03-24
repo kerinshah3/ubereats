@@ -5,6 +5,7 @@ import com.rest.payment.repository.OrderMasterRepository;
 import com.rest.payment.services.ProcessPayments;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,6 +18,7 @@ import java.util.Optional;
 
 @Component
 @Slf4j
+@Profile("jms")
 public class PaymentProcessingConsumer {
 
     @Autowired

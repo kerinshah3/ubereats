@@ -20,6 +20,15 @@ spring.jpa.show-sql: true
 spring:
   application:
     name: Payment Consumer
+  kafka:
+    bootstrap-servers: localhost:9092
+    template:
+      default-topic: incoming_order_queue
+    consumer:
+      properties:
+        auto:
+          offset:
+            reset: earliest
   zipkin:
     base-url: http://${ZIPKIN:localhost}:9411/
     sender.type: web
