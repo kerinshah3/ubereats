@@ -31,8 +31,7 @@ public class SendToIncomingOrderQueue {
         if( Arrays.asList(environment.getActiveProfiles()).contains("kafka")){
             sendOrderIdKafka(orderId);
         }else {
-//            sendOrderIdJMS(orderId);
-            sendOrderIdKafka(orderId);
+            sendOrderIdJMS(orderId);
         }
     }
 
