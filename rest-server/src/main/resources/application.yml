@@ -30,6 +30,13 @@ management:
 spring:
   kafka:
     bootstrap-servers: ${broker:localhost}:9092
+    producer:
+      key-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+    properties:
+      schema:
+        registry:
+          url: http://localhost:8081
   zipkin:
     base-url: http://${ZIPKIN:localhost}:9411/
     sender.type: web
