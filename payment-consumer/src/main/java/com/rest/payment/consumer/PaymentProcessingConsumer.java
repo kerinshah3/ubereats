@@ -1,10 +1,10 @@
 package com.rest.payment.consumer;
 
-import com.rest.payment.entity.OrderMaster;
 import com.rest.payment.repository.OrderMasterRepository;
 import com.rest.payment.services.ProcessPayments;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.stereotype.Component;
@@ -14,11 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.jms.JMSException;
 import javax.jms.MapMessage;
 import javax.jms.Message;
-import java.util.Optional;
 
 @Component
 @Slf4j
-@Profile("jms")
+@ConditionalOnProperty(name="listener.kafka" , havingValue = "false")
 public class PaymentProcessingConsumer {
 
     @Autowired
