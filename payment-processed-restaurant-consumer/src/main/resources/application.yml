@@ -1,0 +1,61 @@
+server.port: 8095
+spring.datasource.url: jdbc:mysql://${MYSQL_CONTAINER_NAME:localhost}:3306/${MYSQL_DATABASE:uber}?pinGlobalTxToPhysicalConnection=true
+spring.datasource.username: ${MYSQL_USER:root}
+spring.datasource.password: ${MYSQL_PASSWORD:kerin3989@K}
+spring.datasource.driver-class-name: com.mysql.cj.jdbc.Driver
+#spring.datasource.localTransactionMode: true
+
+spring.jpa.database-platform: org.hibernate.dialect.MySQL8Dialect
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA_SERVER_HOST:localhost}:${EUREKA_SERVER_PORT:8761}/eureka/
+
+#jms.broker.url: tcp://localhost:61616
+
+listener.kafka: false
+
+spring.jpa.hibernate.ddl-auto: update
+spring.jpa.show-sql: true
+
+spring:
+  profiles.active: {SPRING_PROFILES_ACTIVE:jms}
+  application:
+    name: Payment Processed Restaurant Consumer
+  kafka:
+    bootstrap-servers: ${broker:localhost}:9092
+    template:
+      default-topic: incoming_order_queue
+    consumer:
+      properties:
+        auto:
+          offset:
+            reset: earliest
+  zipkin:
+    base-url: http://${ZIPKIN:localhost}:9411/
+    sender.type: web
+  sleuth.sampler.probability: 1
+  jpa:
+    properties:
+      hibernate:
+        dialect=org:
+          hibernate:
+            dialect:
+              MySQL5Dialect:
+        format_sql: true
+  jms:
+    template:
+      default-destination: delivery_order_queue
+  activemq:
+    broker-url: tcp://${ACTIVEMQ_CONTAINER_NAME:localhost}:61616
+  jta:
+    log-dir: ./payment-consumer
+    atomikos:
+      datasource:
+        localTransactionMode: true
+        max-pool-size: 10
+      properties:
+        max-timeout: 9000000000
+        enable-logging: false
+        default-jta-timeout: 900000000
