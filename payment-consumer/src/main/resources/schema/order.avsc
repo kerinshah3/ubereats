@@ -1,0 +1,11 @@
+{
+  "namespace": "com.kerin.uber",
+  "type": "record",
+  "name": "orderStatusUpdate",
+  "fields": [
+    {
+      "name": "orderId",
+      "type": "long"
+    }
+  ]
+}

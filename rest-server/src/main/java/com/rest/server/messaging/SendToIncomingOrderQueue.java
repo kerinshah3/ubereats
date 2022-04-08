@@ -1,5 +1,6 @@
 package com.rest.server.messaging;
 
+import com.kerin.uber.orderStatusUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -23,7 +24,7 @@ public class SendToIncomingOrderQueue {
     Environment environment;
 
     @Autowired
-    KafkaTemplate<String,String> kafkaTemplate;
+    KafkaTemplate kafkaTemplate;
 
     @Transactional
     public void sendOrderId(int orderId) {
@@ -47,9 +48,10 @@ public class SendToIncomingOrderQueue {
 
     public void sendOrderIdKafka(int orderId) {
         log.info("Sending to Incoming Order Queue");
+        log.info("Order Id {}",orderId);
+        orderStatusUpdate orderStatusUpdate = new orderStatusUpdate((long) orderId);
+        log.info("Order Id {}",orderStatusUpdate.getOrderId());
 
-        kafkaTemplate.send("incoming_order_queue", String.valueOf(orderId));
+        kafkaTemplate.send("incoming-order-topic-1", orderStatusUpdate.getOrderId(), orderStatusUpdate.getOrderId());
     }
-
-
 }

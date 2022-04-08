@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper
+    image: confluentinc/cp-zookeeper:7.0.2
     hostname: zookeeper
     container_name: zookeeper
     ports:
@@ -9,30 +9,38 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
-    networks:
-      - spring-boot-uber-network
 
   broker:
-    image: confluentinc/cp-kafka
+    image: confluentinc/cp-server:7.0.2
     hostname: broker
     container_name: broker
     depends_on:
       - zookeeper
     ports:
       - "9092:9092"
+      - "9101:9101"
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_HOST://localhost:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
-    networks:
-      - spring-boot-uber-network
-
+      KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CONFLUENT_BALANCER_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_JMX_PORT: 9101
+      KAFKA_JMX_HOSTNAME: localhost
+      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      CONFLUENT_METRICS_ENABLE: 'true'
+      CONFLUENT_SUPPORT_CUSTOMER_ID: 'anonymous'
 
   schema-registry:
-    image: confluentinc/cp-schema-registry
+    image: confluentinc/cp-schema-registry:7.0.2
     hostname: schema-registry
     container_name: schema-registry
     depends_on:
@@ -41,10 +49,55 @@ services:
       - "8081:8081"
     environment:
       SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:9092'
-      SCHEMA_REGISTRY_LOG4J_ROOT_LOGLEVEL: WARN
-    networks:
-      - spring-boot-uber-network
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper
+#    hostname: zookeeper
+#    container_name: zookeeper
+#    ports:
+#      - "2181:2181"
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#    networks:
+#      - spring-boot-uber-network
+#
+#  broker:
+#    image: confluentinc/cp-kafka
+#    hostname: broker
+#    container_name: broker
+#    depends_on:
+#      - zookeeper
+#    ports:
+#      - "9092:9092"
+#      - "9093:9093"
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_HOST://localhost:9093
+#      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+#      KAFKA_CONFLUENT_SCHEMA_REGISTRY_URL: http://schema-registry:8081
+#      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+#    networks:
+#      - spring-boot-uber-network
+#
+#
+#  schema-registry:
+#    image: confluentinc/cp-schema-registry
+#    hostname: schema-registry
+#    container_name: schema-registry
+#    depends_on:
+#      - broker
+#    ports:
+#      - "8081:8081"
+#    environment:
+#      SCHEMA_REGISTRY_HOST_NAME: schema-registry
+#      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:9092'
+#      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+#    networks:
+#      - spring-boot-uber-network
 
   zipkin-server:
     container_name: zipkin
@@ -95,18 +148,18 @@ services:
     networks:
       - spring-boot-uber-network
 
-  config-server:
-    container_name: config-server
-    build:
-      context: ./config-server
-      dockerfile: Dockerfile
-    ports:
-      - "8888:8888"
-    depends_on:
-      - zipkin-server
-      - eureka-server-uber
-    networks:
-      - spring-boot-uber-network
+#  config-server:
+#    container_name: config-server
+#    build:
+#      context: ./config-server
+#      dockerfile: Dockerfile
+#    ports:
+#      - "8888:8888"
+#    depends_on:
+#      - zipkin-server
+#      - eureka-server-uber
+#    networks:
+#      - spring-boot-uber-network
 
   driver-consumer-uber:
     container_name: driver-consumer-uber
@@ -228,6 +281,7 @@ services:
       - eureka-server-uber
       - mysql-db-uber
       - activemq-broker-service
+      - schema-registry
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber?pinGlobalTxToPhysicalConnection=true
       SPRING_DATASOURCE_USERNAME: kerin
@@ -240,6 +294,69 @@ services:
       SPRING_PROFILES_ACTIVE: kafka
     ports:
       - "8093:8093"
+    networks:
+      - spring-boot-uber-network
+    entrypoint: /bin/sh
+    command:
+      -c "
+      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-uber to start-up...'; done;
+      java -jar /app.jar "
+
+
+  payment-processed-consumer:
+    container_name: payment-processed-consumer
+    build:
+      context: ./payment-processed-consumer
+      dockerfile: Dockerfile
+    restart: on-failure
+    profiles: [ "kafka" ]
+    depends_on:
+      - eureka-server-uber
+      - mysql-db-uber
+      - activemq-broker-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber?pinGlobalTxToPhysicalConnection=true
+      SPRING_DATASOURCE_USERNAME: kerin
+      SPRING_DATASOURCE_PASSWORD: password123
+      EUREKA_SERVER_HOST: eureka-server-uber
+      EUREKA_SERVER_PORT: 8761
+      ACTIVEMQ_CONTAINER_NAME: activemq-uber
+      ZIPKIN: zipkin
+      BROKER: broker
+      SPRING_PROFILES_ACTIVE: kafka
+    ports:
+      - "8002:8002"
+    networks:
+      - spring-boot-uber-network
+    entrypoint: /bin/sh
+    command:
+      -c "
+      while ! (nc -z eureka-server-uber 8761); do sleep 5; echo 'Waiting for eureka-server-uber to start-up...'; done;
+      java -jar /app.jar "
+
+  payment-processed-restaurant-consumer:
+    container_name: payment-processed-restaurant-consumer
+    build:
+      context: ./payment-processed-restaurant-consumer
+      dockerfile: Dockerfile
+    restart: on-failure
+    profiles: [ "kafka" ]
+    depends_on:
+      - eureka-server-uber
+      - mysql-db-uber
+      - activemq-broker-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://uber-db:3306/uber?pinGlobalTxToPhysicalConnection=true
+      SPRING_DATASOURCE_USERNAME: kerin
+      SPRING_DATASOURCE_PASSWORD: password123
+      EUREKA_SERVER_HOST: eureka-server-uber
+      EUREKA_SERVER_PORT: 8761
+      ACTIVEMQ_CONTAINER_NAME: activemq-uber
+      ZIPKIN: zipkin
+      BROKER: broker
+      SPRING_PROFILES_ACTIVE: kafka
+    ports:
+      - "8001:8001"
     networks:
       - spring-boot-uber-network
     entrypoint: /bin/sh

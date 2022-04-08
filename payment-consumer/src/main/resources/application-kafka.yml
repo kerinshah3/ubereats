@@ -19,6 +19,9 @@ spring.jpa.show-sql: true
 
 listener.kafka: true
 
+kafka:
+  bootstrap-servers: "localhost:9092"
+
 spring:
   profiles.active: {SPRING_PROFILES_ACTIVE:kafka}
   application:

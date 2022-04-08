@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @Slf4j
-@ConditionalOnProperty(name="listener.kafka" , havingValue = "true")
+//@ConditionalOnProperty(name="listener.kafka" , havingValue = "true")
 public class SendToPaymentProcessedKafka {
 
     @Autowired

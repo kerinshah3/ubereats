@@ -1,5 +1,6 @@
 package com.rest.payment.consumer;
 
+import com.kerin.uber.orderStatusUpdate;
 import com.rest.payment.services.ProcessPayments;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -21,16 +22,16 @@ public class PaymentProcessingConsumerKafka {
     ProcessPayments processPayments;
 
     @Transactional
-    @KafkaListener(topics = "incoming_order_queue", groupId = "orderId")
-    public void listener(String orderId) {
+    @KafkaListener(topics = "incoming-order-topic-1", groupId = "orderId")
+    public void listener(orderStatusUpdate order) {
         log.info(
                 "Processing Message Value= {} ",
-                orderId);
-        int payment;
+                order.getOrderId());
+        int orderId = (int) order.getOrderId();
 
-        log.info("Payment processing Consumer received new Order : {}", orderId);
+        log.info("Payment processing Consumer received new Order : {}", order.getOrderId());
 
-        processPayments.verifyPayment(orderId);
+        processPayments.verifyPayment(String.valueOf(orderId));
 
     }
 }
