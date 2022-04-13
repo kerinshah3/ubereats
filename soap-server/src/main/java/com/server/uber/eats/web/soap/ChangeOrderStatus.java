@@ -8,6 +8,7 @@ import io.uber.eats.ws.OrderStatusUpdatePort;
 import io.uber.eats.ws.UpdateOrderStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,7 @@ import java.util.Optional;
         endpointInterface = "io.uber.eats.ws.OrderStatusUpdatePort")
 @Slf4j
 @Component
+@ConditionalOnProperty(value = "spring.ws.enable" , havingValue = "false")
 public class ChangeOrderStatus implements OrderStatusUpdatePort {
 
     @Autowired

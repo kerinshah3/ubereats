@@ -17,10 +17,10 @@ public class UberEatsApp {
     public static void main(String[] args) {
         ApplicationContext context = SpringApplication.run(UberEatsApp.class);
 
-        Bus bus = context.getBean(Bus.class);
-        ChangeOrderStatus changeOrderStatus = context.getBean(ChangeOrderStatus.class);
-
-        EndpointImpl endpoint = new EndpointImpl(bus, changeOrderStatus);
-        endpoint.publish("/orderservice");
+//        Bus bus = context.getBean(Bus.class);
+//        ChangeOrderStatus changeOrderStatus = context.getBean(ChangeOrderStatus.class);
+//
+//        EndpointImpl endpoint = new EndpointImpl(bus, changeOrderStatus);
+//        endpoint.publish("/orderservice");
     }
 }
